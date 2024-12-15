@@ -37,6 +37,33 @@
     </style>
 </head>
 <body>
+    <img src="notify.php" style="display:none;">
+    <script>
+    document.querySelector('.button-link').addEventListener('click', function (event) {
+    event.preventDefault(); // Останавливаем стандартное поведение (временное, чтобы успеть отправить запрос)
+
+    const link = this.href; // Получаем адрес ссылки
+
+    // Отправляем уведомление на сервер
+    fetch('notify.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action: 'button_clicked' }), // Сообщаем серверу о нажатии кнопки
+    })
+    .then(() => {
+        // После успешной отправки перенаправляем пользователя
+        window.location.href = link;
+    })
+    .catch(error => {
+        console.error('Ошибка при отправке уведомления:', error);
+        // Даже если произошла ошибка, выполняем переход
+        window.location.href = link;
+    });
+});
+
+</script>
     <button onclick="window.location.href='https://www.google.com';">Перейти на Google</button>
 </body>
 </html>
